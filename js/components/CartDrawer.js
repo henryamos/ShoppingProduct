@@ -68,9 +68,9 @@ const renderCartFooter = (totalPrice) => `
             <span class="cart-total-label">Total</span>
             <span class="total-price">${formatPrice(totalPrice)}</span>
         </div>
-        <button class="checkout-btn">
+        <a href="/checkout.html" class="checkout-btn">
             Proceed to Checkout
             <i class="ph ph-arrow-right"></i>
-        </button>
+        </a>
     </div>
 `; 

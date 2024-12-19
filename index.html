@@ -1,13 +1,124 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet Desserts Shop</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/base/variables.css">
+    <link rel="stylesheet" href="css/components/product-grid.css">
+    <link rel="stylesheet" href="css/components/product-card.css">
+    <link rel="stylesheet" href="css/layout/header.css">
+    <link rel="stylesheet" href="css/layout/main.css">
+    <link rel="stylesheet" href="css/components/product-modal.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <nav class="main-nav">
+                <div class="nav-left">
+                    <a href="/" class="logo">
+                        <i class="ph ph-cake"></i>
+                        <span>Gourmet Desserts</span>
+                    </a>
+                </div>
+                
+                <div class="nav-center">
+                    <div class="search-wrapper">
+                        <i class="ph ph-magnifying-glass search-icon"></i>
+                        <input 
+                            type="search" 
+                            id="searchInput"
+                            placeholder="Search for desserts..."
+                            aria-label="Search products"
+                        >
+                    </div>
+                    
+                    <div class="filters-wrapper">
+                        <button class="filter-button" id="filterToggle">
+                            <i class="ph ph-funnel"></i>
+                            <span>Filters</span>
+                        </button>
+                        
+                        <div class="filters-dropdown" id="filtersDropdown">
+                            <div class="filter-group">
+                                <label for="categorySelect">Category</label>
+                                <select id="categorySelect" aria-label="Filter by category">
+                                    <option value="">All Categories</option>
+                                    <option value="cakes">Cakes</option>
+                                    <option value="pastries">Pastries</option>
+                                    <option value="cookies">Cookies</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="priceRange">Max Price: <span id="priceValue">$50</span></label>
+                                <input 
+                                    type="range" 
+                                    id="priceRange" 
+                                    min="0" 
+                                    max="100" 
+                                    step="10"
+                                    value="50"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="nav-right">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <i class="ph ph-sun"></i>
+                    </button>
+                    
+                    <button 
+                        class="cart-button" 
+                        id="cartToggle"
+                        aria-label="Shopping cart"
+                    >
+                        <i class="ph ph-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="site-main">
+        <div class="container">
+            <section class="products-section" aria-label="Products">
+                <header class="section-header">
+                    <h1 class="section-title">Our Desserts</h1>
+                    <div class="filters">
+                        <div class="price-filter">
+                            <label for="priceRange">Price Range:</label>
+                            <input 
+                                type="range" 
+                                id="priceRange" 
+                                min="0" 
+                                max="100" 
+                                step="10"
+                            >
+                            <span class="price-value" id="priceValue">$50</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be dynamically inserted here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script type="module" src="js/main.js"></script>
+</body>
 </html>

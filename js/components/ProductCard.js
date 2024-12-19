@@ -1,4 +1,5 @@
 import { formatPrice } from '../utils/formatters.js';
+import { cartService } from '../services/CartService.js';
 
 export const renderProductCard = (product) => {
     return `
@@ -23,13 +24,6 @@ export const renderProductCard = (product) => {
                         900px
                     "
                 >
-                <button 
-                    class="quick-view-btn"
-                    aria-label="Quick view ${product.name}"
-                    onclick="window.showProductDetails(${product.id})"
-                >
-                    <i class="ph ph-eye"></i>
-                </button>
             </div>
             
             <div class="product-info">
@@ -47,7 +41,7 @@ export const renderProductCard = (product) => {
                     <button 
                         class="add-to-cart-btn"
                         aria-label="Add ${product.name} to cart"
-                        data-action="add-to-cart"
+                        onclick="window.addToCart(${product.id})"
                     >
                         <i class="ph ph-shopping-cart"></i>
                         Add to Cart

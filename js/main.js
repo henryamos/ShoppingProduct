@@ -1,6 +1,8 @@
 import { getProducts, searchProducts, filterByCategory } from './services/ProductService.js';
 import { renderProductCard } from './components/ProductCard.js';
 import { formatPrice } from './utils/formatters.js';
+import { cartService } from './services/CartService.js';
+import { renderCartDrawer } from './components/CartDrawer.js';
 
 // State management
 const state = {
@@ -21,7 +23,10 @@ const elements = {
     priceValue: document.getElementById('priceValue'),
     filterToggle: document.getElementById('filterToggle'),
     filtersDropdown: document.getElementById('filtersDropdown'),
-    themeToggle: document.getElementById('themeToggle')
+    themeToggle: document.getElementById('themeToggle'),
+    cartToggle: document.getElementById('cartToggle'),
+    cartCount: document.getElementById('cartCount'),
+    cartContainer: document.getElementById('cartContainer')
 };
 
 // Initialize application
@@ -83,6 +88,12 @@ const setupEventListeners = () => {
     elements.themeToggle?.addEventListener('click', 
         toggleTheme
     );
+
+    // Cart toggle
+    elements.cartToggle?.addEventListener('click', toggleCart);
+
+    // Subscribe to cart changes
+    cartService.subscribe(updateCartUI);
 };
 
 // Event Handlers
@@ -230,3 +241,92 @@ window.showProductDetails = (productId) => {
 
     document.body.appendChild(modal);
 }; 
+
+// Cart functions
+const toggleCart = () => {
+    cartService.toggleCart();
+};
+
+const updateCartUI = (cartInfo) => {
+    // Update cart count
+    if (elements.cartCount) {
+        elements.cartCount.textContent = cartInfo.totalItems;
+        elements.cartCount.classList.toggle('has-items', cartInfo.totalItems > 0);
+    }
+
+    // Update cart drawer
+    if (elements.cartContainer) {
+        elements.cartContainer.innerHTML = renderCartDrawer(cartInfo);
+        setupCartEventListeners();
+    }
+};
+
+const setupCartEventListeners = () => {
+    const cartDrawer = document.querySelector('.cart-drawer');
+    const cartOverlay = document.querySelector('.cart-overlay');
+    if (!cartDrawer) return;
+
+    // Close cart
+    const closeCart = () => cartService.toggleCart();
+
+    cartDrawer.querySelector('#closeCart')?.addEventListener('click', closeCart);
+    cartOverlay?.addEventListener('click', (e) => {
+        if (e.target === cartOverlay) {
+            closeCart();
+        }
+    });
+
+    // Cart item actions
+    cartDrawer.querySelectorAll('.cart-item').forEach(item => {
+        const productId = parseInt(item.dataset.productId);
+
+        item.querySelector('[data-action="increase"]')?.addEventListener('click', () => {
+            const currentQuantity = cartService.getCartInfo().items.find(i => i.id === productId).quantity;
+            cartService.updateQuantity(productId, currentQuantity + 1);
+        });
+
+        item.querySelector('[data-action="decrease"]')?.addEventListener('click', () => {
+            const currentQuantity = cartService.getCartInfo().items.find(i => i.id === productId).quantity;
+            cartService.updateQuantity(productId, currentQuantity - 1);
+        });
+
+        item.querySelector('[data-action="remove"]')?.addEventListener('click', () => {
+            cartService.removeFromCart(productId);
+        });
+    });
+}; 
+
+// Add to cart functionality
+window.addToCart = (productId) => {
+    const product = state.products.find(p => p.id === productId);
+    if (product) {
+        cartService.addToCart(product);
+        showToast(`${product.name} added to cart!`);
+    }
+};
+
+// Toast notification
+const showToast = (message) => {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    // Trigger animation
+    setTimeout(() => toast.classList.add('show'), 100);
+
+    // Remove toast after animation
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+};
+
+// Update cart badge immediately when cart changes
+cartService.subscribe(cartInfo => {
+    const cartBadge = document.getElementById('cartCount');
+    if (cartBadge) {
+        cartBadge.textContent = cartInfo.totalItems;
+        cartBadge.classList.toggle('has-items', cartInfo.totalItems > 0);
+    }
+}); 

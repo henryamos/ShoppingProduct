@@ -17,10 +17,38 @@
     <link rel="stylesheet" href="css/layout/header.css">
     <link rel="stylesheet" href="css/layout/main.css">
     <link rel="stylesheet" href="css/pages/product-details.css">
+    <link rel="stylesheet" href="css/components/toast.css">
+    <link rel="stylesheet" href="css/components/cart-drawer.css">
 </head>
 <body>
+    <div id="cartContainer"></div>
+    
     <header class="site-header">
-        <!-- Copy your existing header from index.html -->
+        <div class="container">
+            <nav class="main-nav">
+                <div class="nav-left">
+                    <a href="/" class="logo">
+                        <i class="ph ph-cake"></i>
+                        <span>Gourmet Desserts</span>
+                    </a>
+                </div>
+                
+                <div class="nav-right">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <i class="ph ph-sun"></i>
+                    </button>
+                    
+                    <button 
+                        class="cart-button" 
+                        id="cartToggle"
+                        aria-label="Shopping cart"
+                    >
+                        <i class="ph ph-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
     </header>
 
     <main class="site-main">

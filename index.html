@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="css/components/product-modal.css">
     <link rel="stylesheet" href="css/components/toast.css">
     <link rel="stylesheet" href="css/components/cart-drawer.css">
+    <link rel="stylesheet" href="css/components/filters.css">
 </head>
 <body>
     <div id="cartContainer"></div>
@@ -46,7 +47,7 @@
                     </div>
                     
                     <div class="filters-wrapper">
-                        <button class="filter-button" id="filterToggle">
+                        <button class="filter-button" id="filterToggle" aria-expanded="false">
                             <i class="ph ph-funnel"></i>
                             <span>Filters</span>
                         </button>
@@ -63,7 +64,9 @@
                             </div>
                             
                             <div class="filter-group">
-                                <label for="priceRange">Max Price: <span id="priceValue">$50</span></label>
+                                <label for="priceRange">
+                                    Price Range: <span id="priceValue">$50</span>
+                                </label>
                                 <input 
                                     type="range" 
                                     id="priceRange" 
@@ -71,6 +74,7 @@
                                     max="100" 
                                     step="10"
                                     value="50"
+                                    class="price-range"
                                 >
                             </div>
                         </div>

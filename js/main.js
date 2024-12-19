@@ -115,11 +115,27 @@ const handlePriceChange = async (e) => {
 
 // Toggle functions
 const toggleFilters = () => {
-    elements.filtersDropdown.classList.toggle('show');
-    elements.filterToggle.setAttribute(
-        'aria-expanded',
-        elements.filtersDropdown.classList.contains('show')
-    );
+    if (!elements.filtersDropdown || !elements.filterToggle) return;
+    
+    elements.filtersDropdown.classList.toggle('active');
+    const isExpanded = elements.filtersDropdown.classList.contains('active');
+    elements.filterToggle.setAttribute('aria-expanded', isExpanded);
+
+    // Close filters when clicking outside
+    if (isExpanded) {
+        const closeFilters = (e) => {
+            if (!elements.filtersDropdown.contains(e.target) && 
+                !elements.filterToggle.contains(e.target)) {
+                elements.filtersDropdown.classList.remove('active');
+                elements.filterToggle.setAttribute('aria-expanded', false);
+                document.removeEventListener('click', closeFilters);
+            }
+        };
+        // Add timeout to prevent immediate closure
+        setTimeout(() => {
+            document.addEventListener('click', closeFilters);
+        }, 0);
+    }
 };
 
 const toggleTheme = () => {
